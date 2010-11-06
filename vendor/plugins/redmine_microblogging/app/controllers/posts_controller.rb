@@ -1,21 +1,53 @@
 class PostsController < ApplicationController
   unloadable
-  layout 'base'
-
+  # GET /posts
+  # GET /posts.xml
   def index
-    @posts = Post.find(:all)
+    @posts = Post.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @posts }
+    end
   end
 
-  def create
-  end
-
+  # GET /posts/new
+  # GET /posts/new.xml
   def new
+    @post = Post.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @post }
+    end
   end
 
+  # POST /posts
+  # POST /posts.xml
+  def create
+    @post = Post.new(params[:post])
+
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to(posts_url, :notice => 'Post was successfully created.') }
+        format.xml  { render :xml => @post, :status => :created, :location => @post }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /posts/1
+  # DELETE /posts/1.xml
   def destroy
-  end
+    @post = Post.find(params[:id])
+    @post.destroy
 
-  def show
+    respond_to do |format|
+      format.html { redirect_to(posts_url, :notice => 'Post was successfully deleted.') }
+      format.xml  { head :ok }
+    end
   end
 end
 
