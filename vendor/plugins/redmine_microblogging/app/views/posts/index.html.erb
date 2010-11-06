@@ -1,0 +1,9 @@
+<h2>Posts#index</h2>
+
+<% @posts.each do |post| %>
+  <p>
+    <%= post.user_id %>
+    <%= post.content %>
+  </p>
+<% end %>
+
