@@ -4,10 +4,10 @@ production:
   adapter: mysql
   database: redmine
   host: localhost
-  username: root
+  username: redmine
   password:
   encoding: utf8
- 
+
 development:
   adapter: mysql
   database: redmine_development
@@ -37,3 +37,4 @@ test_pgsql:
 test_sqlite3:
   adapter: sqlite3
   database: db/test.db
+
