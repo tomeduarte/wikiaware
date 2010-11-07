@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
   unloadable
+  before_filter :require_login, :only => [:new]
+
   # GET /posts
   # GET /posts.xml
   def index
