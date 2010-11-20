@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   unloadable
-  before_filter :require_login, :only => [:new]
+  before_filter :require_login
 
   # GET /posts
   # GET /posts.xml

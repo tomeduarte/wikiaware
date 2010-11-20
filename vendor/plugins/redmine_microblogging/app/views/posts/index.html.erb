@@ -24,7 +24,11 @@
   <% for friendship in @user.friendships %>
     <li>
       <%=h friendship.friend.name %>
-      (<%= link_to "unfollow", friendship, :method => :delete %>)
+      <% if friendship.accepted %>
+        (<%= link_to "unfollow", friendship, :method => :delete %>)
+      <% else %>
+        (pending)
+      <% end %>
     </li>
   <% end %>
 </ul>
@@ -32,10 +36,16 @@
 <h3>Followers</h3>
 <ul>
   <% for friendship in @user.inverse_friendships %>
-    <li>
-      <%=h friendship.user.name %>
-      (<%= link_to "block", friendship, :method => :delete %>)
-    </li>
-  <% end %>
+    <% if !friendship.blocked %>
+      <li>
+          <%=h friendship.user.name %>
+          <% if !friendship.accepted %>
+            (<%= link_to "accept", accept_friendship_path(friendship)  %>)
+          <% else %>
+            (<%= link_to "block", block_friendship_path(friendship) %>)
+          <% end %> <!-- IF Accepted -->
+      </li>
+    <% end %> <!-- IF Blocked -->
+  <% end %> <!-- FOR -->
 </ul>
 

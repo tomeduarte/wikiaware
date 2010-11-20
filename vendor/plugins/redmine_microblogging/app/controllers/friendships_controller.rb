@@ -22,5 +22,22 @@ class FriendshipsController < ApplicationController
     flash[:notice] = "Removed friendship."
     redirect_to root_url
   end
+
+  def accept
+    @friendship = find_current_user.inverse_friendships.find(params[:id])
+    @friendship.accepted = true
+    @friendship.save
+    flash[:notice] = "Accepted friendship."
+    redirect_to root_url
+  end
+
+  def block
+    @friendship = find_current_user.inverse_friendships.find(params[:id])
+    @friendship.accepted = false
+    @friendship.blocked = true
+    @friendship.save
+    flash[:notice] = "Blocked friendship."
+    redirect_to root_url
+  end
 end
 
