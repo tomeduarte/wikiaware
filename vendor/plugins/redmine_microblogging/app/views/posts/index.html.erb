@@ -6,11 +6,11 @@
     <th>Content</th>
   </tr>
 
-<% @posts.each do |post| %>
+<% @timeline.each do |line| %>
   <tr>
-    <td><%=h post.user.name %></td>
-    <td><%=h post.content %></td>
-    <td><%= link_to 'Destroy', post, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%=h line[:user].name %></td>
+    <td><%=h line[:post].content %></td>
+    <td><%=  link_to 'Destroy', line[:post], :confirm => 'Are you sure?', :method => :delete if line[:user] == @user %></td>
   </tr>
 <% end %>
 </table>
@@ -18,4 +18,24 @@
 <br />
 
 <%= link_to 'New post', new_post_path %>
+
+<h3>Following</h3>
+<ul>
+  <% for friendship in @user.friendships %>
+    <li>
+      <%=h friendship.friend.name %>
+      (<%= link_to "unfollow", friendship, :method => :delete %>)
+    </li>
+  <% end %>
+</ul>
+
+<h3>Followers</h3>
+<ul>
+  <% for friendship in @user.inverse_friendships %>
+    <li>
+      <%=h friendship.user.name %>
+      (<%= link_to "block", friendship, :method => :delete %>)
+    </li>
+  <% end %>
+</ul>
 

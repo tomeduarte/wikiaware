@@ -5,7 +5,15 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   def index
-    @posts = Post.all
+    @user = find_current_user
+    timeline = []
+    @user.friends.each do |friend|
+      friend.posts.each do |post|
+        timeline << {:user => friend, :post => post}
+      end
+    end
+    @user.posts.each do |p| timeline << {:user => @user, :post => p} end
+    @timeline = timeline.sort_by{ |line| -line[:post].created_at.to_i }
 
     respond_to do |format|
       format.html # index.html.erb
