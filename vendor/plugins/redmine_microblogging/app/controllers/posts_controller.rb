@@ -6,6 +6,7 @@ class PostsController < ApplicationController
   # GET /posts.xml
   def index
     @user = find_current_user
+    @search_results = User.search(params[:search])
     timeline = []
     @user.friends.each do |friend|
       friend.posts.each do |post|

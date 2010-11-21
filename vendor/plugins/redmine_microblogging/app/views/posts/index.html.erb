@@ -1,51 +1,75 @@
-<h1>Listing posts</h1>
+<div class="splitcontentleft">
+  <h1>Listing posts</h1>
 
-<table>
-  <tr>
-    <th>User</th>
-    <th>Content</th>
-  </tr>
+  <table>
+    <tr>
+      <th>User</th>
+      <th>Content</th>
+    </tr>
 
-<% @timeline.each do |line| %>
-  <tr>
-    <td><%=h line[:user].name %></td>
-    <td><%=h line[:post].content %></td>
-    <td><%=  link_to 'Destroy', line[:post], :confirm => 'Are you sure?', :method => :delete if line[:user] == @user %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New post', new_post_path %>
-
-<h3>Following</h3>
-<ul>
-  <% for friendship in @user.friendships %>
-    <li>
-      <%=h friendship.friend.name %>
-      <% if friendship.accepted %>
-        (<%= link_to "unfollow", friendship, :method => :delete %>)
-      <% else %>
-        (pending)
-      <% end %>
-    </li>
+  <% @timeline.each do |line| %>
+    <tr>
+      <td><%=h line[:user].name %></td>
+      <td><%=h line[:post].content %></td>
+      <td><%=  link_to 'Destroy', line[:post], :confirm => 'Are you sure?', :method => :delete if line[:user] == @user %></td>
+    </tr>
   <% end %>
-</ul>
+  </table>
 
-<h3>Followers</h3>
-<ul>
-  <% for friendship in @user.inverse_friendships %>
-    <% if !friendship.blocked %>
+  <br />
+
+  <%= link_to 'New post', new_post_path %>
+
+  <h3>Following</h3>
+  <ul>
+    <% for friendship in @user.friendships %>
       <li>
-          <%=h friendship.user.name %>
-          <% if !friendship.accepted %>
-            (<%= link_to "accept", accept_friendship_path(friendship)  %>)
-          <% else %>
-            (<%= link_to "block", block_friendship_path(friendship) %>)
-          <% end %> <!-- IF Accepted -->
+        <%=h friendship.friend.name %>
+        <% if friendship.accepted %>
+          (<%= link_to "unfollow", friendship, :method => :delete %>)
+        <% else %>
+          (pending)
+        <% end %>
       </li>
-    <% end %> <!-- IF Blocked -->
-  <% end %> <!-- FOR -->
-</ul>
+    <% end %>
+  </ul>
+
+  <h3>Followers</h3>
+  <ul>
+    <% for friendship in @user.inverse_friendships %>
+      <% if !friendship.blocked %>
+        <li>
+            <%=h friendship.user.name %>
+            <% if !friendship.accepted %>
+              (<%= link_to "accept", accept_friendship_path(friendship)  %>)
+            <% else %>
+              (<%= link_to "block", block_friendship_path(friendship) %>)
+            <% end %> <!-- IF Accepted -->
+        </li>
+      <% end %> <!-- IF Blocked -->
+    <% end %> <!-- FOR -->
+  </ul>
+</div>
+<div class="splitcontentright">
+  <h3>Search Users</h3>
+  <% form_tag posts_path, :method => 'get' do %>
+    <p>
+      <%= text_field_tag :search, params[:search] %>
+      <%= submit_tag "Search", :name => nil %>
+    </p>
+  <% end %>
+
+
+  <% if @search_results %>
+    <ul>
+      <% for search_result in @search_results %>
+        <li>
+          <%=h search_result.login %>
+          (<%= link_to "follow", friendships_path(:friend_id => search_result.id), :method => :post %>)
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+</div>
 
