@@ -1,0 +1,11 @@
+<% for search_result in @search_results %>
+  <div>
+    <h4> <%=h search_result.login %></h4>
+    <%= avatar search_result, :size => "50" %>
+    <p> Name: <%=h search_result.name %></p>
+    <p> Email: <%=h search_result.mail %></p>
+
+    (<%= link_to "follow", friendships_path(:friend_id => search_result.id), :method => :post %>)
+  </div>
+<% end %>
+

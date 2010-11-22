@@ -60,16 +60,8 @@
     </p>
   <% end %>
 
-
   <% if @search_results %>
-    <ul>
-      <% for search_result in @search_results %>
-        <li>
-          <%=h search_result.login %>
-          (<%= link_to "follow", friendships_path(:friend_id => search_result.id), :method => :post %>)
-        </li>
-      <% end %>
-    </ul>
+    <%= render :partial => 'search_results', :locals => { :search_results => @search_results } %>
   <% end %>
 </div>
 
