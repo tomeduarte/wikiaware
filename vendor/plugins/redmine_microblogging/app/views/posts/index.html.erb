@@ -27,7 +27,7 @@
         <%=h friendship.friend.name %>
         <% if friendship.accepted %>
           (<%= link_to "unfollow", friendship, :method => :delete %>)
-        <% else %>
+        <% elsif !friendship.blocked %>
           (pending)
         <% end %>
       </li>
@@ -41,7 +41,7 @@
         <li>
             <%=h friendship.user.name %>
             <% if !friendship.accepted %>
-              (<%= link_to "accept", accept_friendship_path(friendship)  %>)
+              (<%= link_to "accept", accept_friendship_path(friendship) %> | <%= link_to "reject", reject_friendship_path(friendship) %> )
             <% else %>
               (<%= link_to "block", block_friendship_path(friendship) %>)
             <% end %> <!-- IF Accepted -->
@@ -50,6 +50,7 @@
     <% end %> <!-- FOR -->
   </ul>
 </div>
+
 <div class="splitcontentright">
   <h3>Search Users</h3>
   <% form_tag posts_path, :method => 'get' do %>
@@ -70,6 +71,5 @@
       <% end %>
     </ul>
   <% end %>
-
 </div>
 

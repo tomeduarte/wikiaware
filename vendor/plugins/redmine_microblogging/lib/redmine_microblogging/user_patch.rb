@@ -8,13 +8,13 @@ module RedmineMicroblogging
 
         has_many :posts, :class_name => 'Post'
         has_many :friendships
-        has_many :friends, :through => :friendships, :conditions => ["friendships.accepted = ?", true]
+        has_many :friends, :through => :friendships, :conditions => ["friendships.accepted = ? AND friendships.blocked = ?", true, false]
         has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
         has_many :inverse_friends, :through => :inverse_friendships, :source => :user
 
         def self.search(search)
           if search
-            find(:all, :conditions => ['login LIKE ?', "%#{search}%"])
+            find(:all, :conditions => ['login LIKE ? OR firstname LIKE ? OR mail LIKE ?', "%#{search}%", "%#{search}%", "%#{search}%"])
           end
         end
       end #base.class_eval

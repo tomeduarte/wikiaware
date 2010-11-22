@@ -31,9 +31,15 @@ class FriendshipsController < ApplicationController
     redirect_to posts_url
   end
 
+  def reject
+    @friendship = find_current_user.inverse_friendships.find(params[:id])
+    @friendship.destroy
+    flash[:notice] = "Following request rejected."
+    redirect_to posts_url
+  end
+
   def block
     @friendship = find_current_user.inverse_friendships.find(params[:id])
-    @friendship.accepted = false
     @friendship.blocked = true
     @friendship.save
     flash[:notice] = "User sucessfuly blocked."
