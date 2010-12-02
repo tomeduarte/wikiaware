@@ -3,11 +3,13 @@ class FriendshipsController < ApplicationController
 
   def create
     @friendship = find_current_user.friendships.build(:friend_id => params[:friend_id])
-    if params[:friend_id] == find_current_user.id
+    logger.info(params[:friend_id])
+    logger.info(find_current_user.id)
+    if User.find(params[:friend_id]).id == find_current_user.id
+        logger.warn("here");
       flash[:error] = "Can't follow yourself."
       redirect_to posts_url
-    end
-    if @friendship.save
+    elsif @friendship.save
       flash[:notice] = "Following request sent."
       redirect_to posts_url
     else
