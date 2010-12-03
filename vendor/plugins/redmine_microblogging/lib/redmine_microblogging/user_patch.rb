@@ -11,6 +11,7 @@ module RedmineMicroblogging
         has_many :friends, :through => :friendships, :conditions => ["friendships.accepted = ? AND friendships.blocked = ?", true, false]
         has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
         has_many :inverse_friends, :through => :inverse_friendships, :source => :user
+        has_many :subscriptions
 
         def self.search(search)
           if search
@@ -20,6 +21,15 @@ module RedmineMicroblogging
       end #base.class_eval
 
     end #self.included
-  end
+  end # user
+  module WikiPagePatch
+    def self.included(base)
+      base.class_eval do
+        unloadable
+
+        has_many :subscriptions
+      end #base.class_eval
+    end # self.included
+  end # wikipage
 end
 

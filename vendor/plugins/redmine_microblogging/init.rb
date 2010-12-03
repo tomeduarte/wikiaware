@@ -10,6 +10,7 @@ Redmine::Plugin.register :redmine_microblogging do
   version '0.0.1'
   url 'http://ihuru.fe.up.pt/ldso/1011/doku.php'
   menu :application_menu, :posts, {:controller=>'posts', :action=>'index'}, :caption=>'Microblogging'
+  menu :application_menu, :subscriptions, {:controller=>'subscriptions', :action=>'index'}, :caption=>'Subscriptions'
 end
 
 
