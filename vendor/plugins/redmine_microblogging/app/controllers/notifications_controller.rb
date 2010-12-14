@@ -61,7 +61,7 @@ class NotificationsController < ApplicationController
 
     respond_to do |format|
       if @notification.update_attributes(params[:notification])
-        format.html { redirect_to(@notification, :notice => 'Notification was successfully updated.') }
+        format.html { redirect_to(notifications_url, :notice => 'Notification was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -82,3 +82,4 @@ class NotificationsController < ApplicationController
     end
   end
 end
+

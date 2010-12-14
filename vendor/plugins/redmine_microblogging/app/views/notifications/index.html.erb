@@ -7,7 +7,7 @@
 
 <% @notifications_unread.each do |notification| %>
   <tr>
-    <td><%=h notification.subscription.page.title %></td>
+    <td><%= link_to notification.subscription.page.title, '/projects/'+notification.subscription.page.project.identifier+'/wiki/'+notification.subscription.page.title %> <%=  link_to 'Mark as Read', notification_path(notification, :notification => {:read => true} ), :method => :put %></td>
   </tr>
 <% end %>
 </table>
@@ -20,7 +20,8 @@
 
 <% @notifications_read.each do |notification| %>
   <tr>
-    <td><%=h notification.subscription_id %></td>
+    <td><%= link_to notification.subscription.page.title, '/projects/'+notification.subscription.page.project.identifier+'/wiki/'+notification.subscription.page.title %> </td>
   </tr>
 <% end %>
 </table>
+
