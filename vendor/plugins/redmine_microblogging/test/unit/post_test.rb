@@ -25,4 +25,10 @@ class PostTest < ActiveSupport::TestCase
     assert post.save
   end
 
+  def test_destroy
+    post = Post.find(:first, :conditions => ["content = ?","second post"]) 
+
+    assert post.destroy
+    assert_nil Post.find(:first, :conditions => ["content = ?","second post"]) 
+  end
 end

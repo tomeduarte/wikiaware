@@ -7,6 +7,8 @@ class FriendshipTest < ActiveSupport::TestCase
     User.current = nil
     @admin = User.find(1)
     @jdoe = User.find(2)
+    @friendship_pending = Friendship.find(1)
+    @friendship_accepted = Friendship.find(2)
   end
 
   def test_create
@@ -24,6 +26,8 @@ class FriendshipTest < ActiveSupport::TestCase
     # saves full friendship
     friendship.friend = @jdoe
     assert friendship.save 
+    assert_equal friendship.accepted, false
+    assert_equal friendship.blocked, false
   end 
 
   def test_cant_befriend_yourself
@@ -33,5 +37,32 @@ class FriendshipTest < ActiveSupport::TestCase
     friendship.friend = @admin
     assert !friendship.save
     assert_equal friendship.errors.count, 1
+  end
+
+  def test_block
+    # check valid state
+    assert_equal @friendship_accepted.accepted, true
+    assert_equal @friendship_accepted.blocked, false
+
+    # block friendship
+    @friendship_accepted.blocked = true
+    assert @friendship_accepted.save
+    assert_equal @friendship_accepted.accepted, true
+    assert_equal @friendship_accepted.blocked, true
+  end
+
+  def test_accept
+    # check valid state
+    assert_equal @friendship_pending.accepted, false
+    
+    # accept friendship and save
+    @friendship_pending.accepted = true
+    assert @friendship_pending.save
+  end
+
+  def test_destroy
+    friendship = Friendship.find(:first, :conditions => ["user_id = ? AND friend_id = ?",@admin.id, @jdoe.id]) 
+    assert friendship.destroy
+    assert_nil Friendship.find(:first, :conditions => ["user_id = ? AND friend_id = ?",@admin.id, @jdoe.id])
   end
 end

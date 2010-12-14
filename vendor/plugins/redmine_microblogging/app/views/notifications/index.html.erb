@@ -1,0 +1,26 @@
+<h1>Listing unread notifications</h1>
+
+<table>
+  <tr>
+    <th>Subscription</th>
+  </tr>
+
+<% @notifications_unread.each do |notification| %>
+  <tr>
+    <td><%=h notification.subscription.page.title %></td>
+  </tr>
+<% end %>
+</table>
+
+<h1>Listing read notifications</h1>
+<table>
+  <tr>
+    <th>Subscription</th>
+  </tr>
+
+<% @notifications_read.each do |notification| %>
+  <tr>
+    <td><%=h notification.subscription_id %></td>
+  </tr>
+<% end %>
+</table>

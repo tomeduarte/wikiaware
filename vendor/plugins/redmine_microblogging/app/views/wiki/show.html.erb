@@ -1,5 +1,9 @@
 <div class="contextual">
-<%= link_to 'Subscrever', {:controller => 'subscriptions', :action => 'create', :page_id => @page}, :method => :post %>
+<% if User.current.subscriptions.any? {|sub| sub.page_id == @page.id} %>
+  <%= link_to 'Remove subscription', Subscription.find(:first, :conditions => ['page_id = ?', @page.id]), :confirm => 'Are you sure?', :method => :delete %>
+<% else %>
+  <%= link_to 'Subscrever', {:controller => 'subscriptions', :action => 'create', :page_id => @page}, :method => :post %>
+<% end %>
 <% if @editable %>
 <%= link_to_if_authorized(l(:button_edit), {:action => 'edit', :page => @page.title}, :class => 'icon icon-edit', :accesskey => accesskey(:edit)) if @content.version == @page.content.version %>
 <%= watcher_tag(@page, User.current) %>

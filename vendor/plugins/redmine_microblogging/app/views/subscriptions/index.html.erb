@@ -10,7 +10,8 @@
   <% @subscriptions.each do |subscription| %>
     <tr>
       <td><%=h subscription.page.project.name %></td>
-      <td><%=h subscription.page.title %></td>
+<!-- FIXME -->
+      <td><%= link_to subscription.page.title, '/projects/'+subscription.page.project.identifier+'/wiki/'+subscription.page.title %></td>
       <td><%= link_to 'Remove', subscription, :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>
   <% end %>
