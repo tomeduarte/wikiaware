@@ -17,4 +17,5 @@
 /tmp/sockets/*
 /tmp/test/*
 /vendor/rails
+*.swp
 *.rbc
