@@ -80,3 +80,4 @@ fixtures :users, :posts
   end
 
 end
+

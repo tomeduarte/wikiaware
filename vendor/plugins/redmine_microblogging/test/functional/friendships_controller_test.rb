@@ -3,36 +3,41 @@ require File.dirname(__FILE__) + '/../test_helper'
 class FriendshipsControllerTest < ActionController::TestCase
 
   def setup
-    User.current = nil
     @admin = User.find(1)
-    @jdoe = User.find(2)
-    @jsmith = User.find(3)
-    @admin_post = Post.find(1)
-    @jdoe_post = Post.find(2)
-    @jsmith_post = Post.find(3)
+    @controller = FriendshipsController.new
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+    @request.session[:user_id] = @admin.id
+    Setting.default_language = 'en'
+    User.current = @admin
   end
 
-  context "FOLLOW user" do
-
+  context "routes" do
+    should_route  :post, '/friendships', :controller => 'friendships', :action => 'create'
+    should_route  :delete, '/friendships/1', :controller => 'friendships', :action => 'destroy', :id => 1
+    should_route  :get, '/friendships/1/block', :controller => 'friendships', :action => 'block_friendship', :id => 1
+    should_route  :get, '/friendships/1/accept', :controller => 'friendships', :action => 'accept_friendship', :id => 1
+    should_route  :get, '/friendships/1/reject', :controller => 'friendships', :action => 'reject_friendship', :id => 1
   end
 
-  def test_follow
-    
+  context "post :create" do
+    setup do
+      post :create, :friendship => {:friend_id => '2'}
+    end
+
+    should_respond_with :redirect
+    should_redirect_to("index") {{:controller => 'posts', :action => 'index'}}
   end
 
-  def test_unfollow
+  context "delete :destroy" do
+      setup do
+        @friendship = Friendship.find(1)
+        delete :destroy, :id => @friendship.id
+      end
+
+      should_respond_with :redirect
+      should_redirect_to("index") {{:controller => 'posts', :action => 'index'}}
   end
 
-  def test_accept
-  end
-
-  def test_reject
-  end
-
-  def test_block
-  end
-
-  def test_unblock
-    assert_equal "is_implemented", "true"
-  end
 end
+
