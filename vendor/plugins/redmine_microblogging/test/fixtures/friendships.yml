@@ -11,3 +11,10 @@ friendship_002:
   friend_id: 3
   accepted: true
   blocked: false
+friendship_003:
+  id: 3
+  user_id: 2
+  friend_id: 1
+  accepted: false
+  blocked: false
+

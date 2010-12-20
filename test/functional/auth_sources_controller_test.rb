@@ -77,7 +77,8 @@ class AuthSourcesControllerTest < ActionController::TestCase
       should_set_the_flash_to /deletion/i
 
     end
-    
+
     should "be tested with users"
   end
 end
+
