@@ -1,24 +1,18 @@
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'microblogging', :plugin => 'redmine_microblogging' %>
+<% end %>
+
 <div class="splitcontentleft">
-  <h1>Listing posts</h1>
+  <%= link_to 'New post', new_post_path, :class => 'contextual icon icon-add' %>
+  <h2>Listing posts</h2>
 
-  <table>
-    <tr>
-      <th>User</th>
-      <th>Content</th>
-    </tr>
-
-  <% @timeline.each do |line| %>
-    <tr>
-      <td><%=h line[:user].name %></td>
-      <td><%=h line[:post].content %></td>
-      <td><%=  link_to 'Destroy', line[:post], :confirm => 'Are you sure?', :method => :delete if line[:user] == @user %></td>
-    </tr>
-  <% end %>
-  </table>
+  <ol>
+    <% @timeline.each do |line| %>
+      <%= render :partial => 'line_item', :locals => { :line => line, :user => @user } %>
+    <% end %>
+  </ol>
 
   <br />
-
-  <%= link_to 'New post', new_post_path %>
 
   <h3>Following</h3>
   <ul>

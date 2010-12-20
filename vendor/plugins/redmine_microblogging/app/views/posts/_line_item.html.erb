@@ -1,0 +1,8 @@
+<li class='line_item'>
+  <p><%=  link_to '', line[:post], :confirm => 'Are you sure?', :method => :delete, :class => 'del-item contextual icon icon-del' if line[:user] == user %></p>
+  <p class='item-avatar'><%= avatar user, :size => "40" %></p>
+  <p class='item-name'><%=h line[:user].name %></p>
+  <p class='item-content'><%=h line[:post].content %></p>
+  <p class='item-time'><%=h time_ago_in_words(line[:post].created_at) %> ago</p>
+</li>
+

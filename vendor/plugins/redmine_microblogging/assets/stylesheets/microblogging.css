@@ -1,0 +1,47 @@
+ol {
+  list-style-type: none;
+  padding: 0px;
+}
+
+ol > li:nth-child(odd) {
+  background-color: #F6F6F6;
+  border-bottom: 1px solid #E4E4E4;
+  color: #505050;
+  line-height: 1.5em;
+  padding: 3px 3px 10px 3px;
+}
+
+ol > li:nth-child(even) {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #E4E4E4;
+  color: #505050;
+  line-height: 1.5em;
+  padding: 3px 3px 10px 3px;
+}
+
+.del-item {
+  padding: 10px;
+}
+/*
+.item-avatar {
+  padding-left: 10px;
+  display: inline;
+  float: left;
+}
+
+.item-name {
+  display: inline;
+  float: left;
+}
+
+.item-content {
+  display: inline;
+  float: left;
+}
+
+.item-time {
+  clear: both;
+  float: right;
+}
+*/
+
