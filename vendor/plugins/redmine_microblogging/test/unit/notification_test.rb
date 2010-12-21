@@ -15,12 +15,11 @@ class NotificationTest < ActiveSupport::TestCase
 
     # can't save new/empty object
     assert !notification.save
-    assert_equal notification.errors.count, 2
-
-    # assign description, but still missing the subscription
-    notification.description = "a sample notification"
-    assert !notification.save
     assert_equal notification.errors.count, 1
+
+    # assign description, saveable but still missing the subscription
+    notification.description = "a sample notification"
+    assert notification.save
 
     # assign subscription and save
     notification.subscription = @subscription

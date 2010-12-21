@@ -7,7 +7,11 @@
 
 <% @notifications_unread.each do |notification| %>
   <tr>
-    <td><%= link_to notification.subscription.page.title, '/projects/'+notification.subscription.page.project.identifier+'/wiki/'+notification.subscription.page.title %> <%= notification.description + ' ' + time_ago_in_words(notification.created_at) %> ago</td>
+<% if notification.subscription %>
+    <td>"<%= link_to notification.subscription.page.title, '/projects/'+notification.subscription.page.project.identifier+'/wiki/'+notification.subscription.page.title %>" from project <%= notification.subscription.page.project.name+ ' ' + notification.description + ' ' + time_ago_in_words(notification.created_at) %> ago</td>
+<% else %>
+    <td><%= notification.description + ' ' + time_ago_in_words(notification.created_at) %> ago</td>
+<% end %>
     <td><%=  link_to 'Mark as Read', notification_path(notification, :notification => {:read => true} ), :method => :put %></td>
   </tr>
 <% end %>
@@ -21,7 +25,11 @@
 
 <% @notifications_read.each do |notification| %>
   <tr>
-    <td><%= link_to notification.subscription.page.title, '/projects/'+notification.subscription.page.project.identifier+'/wiki/'+notification.subscription.page.title %> <%= notification.description + ' ' + time_ago_in_words(notification.created_at) %> ago</td>
+<% if notification.subscription %>
+    <td>"<%= link_to notification.subscription.page.title, '/projects/'+notification.subscription.page.project.identifier+'/wiki/'+notification.subscription.page.title %>" from project <%= notification.subscription.page.project.name+ ' ' + notification.description + ' ' + time_ago_in_words(notification.created_at) %> ago</td>
+<% else %>
+    <td><%= notification.description + ' ' + time_ago_in_words(notification.created_at) %> ago</td>
+<% end %>
   </tr>
 <% end %>
 </table>
