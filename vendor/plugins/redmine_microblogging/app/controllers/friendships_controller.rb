@@ -39,5 +39,12 @@ class FriendshipsController < ApplicationController
     @friendship.save
     redirect_to(posts_url, :notice => "User sucessfuly blocked.")
   end
+
+  def unblock
+    @friendship = find_current_user.inverse_friendships.find(params[:id])
+    @friendship.blocked = false
+    @friendship.save
+    redirect_to(posts_url, :notice => "User sucessfuly unblocked.")
+  end
 end
 

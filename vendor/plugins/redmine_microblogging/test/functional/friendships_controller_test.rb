@@ -104,5 +104,19 @@ fixtures :users, :friendships
       assert_equal true, Friendship.find(3).blocked
     end
   end
+
+  context "get :unblock" do
+    setup do
+      @friendship = Friendship.find(4)
+      get :unblock, :id => @friendship.id
+    end
+
+    should_respond_with :redirect
+    should_redirect_to("index") { posts_url }
+
+    should "update the record" do
+      assert_equal false, Friendship.find(4).blocked
+    end
+  end
 end
 

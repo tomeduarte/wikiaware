@@ -35,7 +35,7 @@
       <% end %>
 
       <% if @search_results %>
-        <%= render :partial => 'search_results', :locals => { :search_results => @search_results } %>
+        <%= render :partial => 'search_results', :locals => { :search_results => @search_results, :user => @user } %>
       <% end %>
     </div>
 
@@ -63,7 +63,7 @@
             <li>
                 <%=h friendship.user.name %>
                 <% if !friendship.accepted %>
-                  (<%= link_to "accept", accept_friendship_path(friendship) %> | <%= link_to "reject", reject_friendship_path(friendship) %> )
+                  (<%= link_to "accept", accept_friendship_path(friendship) %> | <%= link_to "reject", reject_friendship_path(friendship) %>)
                 <% else %>
                   (<%= link_to "block", block_friendship_path(friendship) %>)
                 <% end %> <!-- IF Accepted -->
