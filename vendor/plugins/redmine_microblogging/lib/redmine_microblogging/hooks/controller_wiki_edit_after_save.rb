@@ -8,6 +8,7 @@ module RedmineLinks
           n = Notification.new
           n.subscription_id = sub.id
           n.read = false
+          n.description = "was edited"
           n.save
         end 
 			end

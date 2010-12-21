@@ -1,4 +1,5 @@
 notification_001:
   id: 1
   subscription_id: 1
+  description: "was edited"
   read: false
