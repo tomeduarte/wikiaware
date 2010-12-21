@@ -1,61 +1,77 @@
 <% content_for :header_tags do %>
     <%= stylesheet_link_tag 'microblogging', :plugin => 'redmine_microblogging' %>
+    <%= javascript_include_tag "jquery-1.4.4.min.js", :plugin => 'redmine_microblogging' %>
+    <%= javascript_include_tag "jquery-ui-1.8.7.custom.min.js", :plugin => 'redmine_microblogging' %>
+    <%= javascript_include_tag "microblogging.js", :plugin => 'redmine_microblogging' %>
 <% end %>
 
 <div class="splitcontentleft">
   <%= link_to 'New post', new_post_path, :class => 'contextual icon icon-add' %>
-  <h2>Listing posts</h2>
+
+  <h2>Timeline</h2>
 
   <ol>
     <% @timeline.each do |line| %>
       <%= render :partial => 'line_item', :locals => { :line => line, :user => @user } %>
     <% end %>
   </ol>
-
-  <br />
-
-  <h3>Following</h3>
-  <ul>
-    <% for friendship in @user.friendships %>
-      <li>
-        <%=h friendship.friend.name %>
-        <% if friendship.accepted %>
-          (<%= link_to "unfollow", friendship, :method => :delete %>)
-        <% elsif !friendship.blocked %>
-          (pending)
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-
-  <h3>Followers</h3>
-  <ul>
-    <% for friendship in @user.inverse_friendships %>
-      <% if !friendship.blocked %>
-        <li>
-            <%=h friendship.user.name %>
-            <% if !friendship.accepted %>
-              (<%= link_to "accept", accept_friendship_path(friendship) %> | <%= link_to "reject", reject_friendship_path(friendship) %> )
-            <% else %>
-              (<%= link_to "block", block_friendship_path(friendship) %>)
-            <% end %> <!-- IF Accepted -->
-        </li>
-      <% end %> <!-- IF Blocked -->
-    <% end %> <!-- FOR -->
-  </ul>
 </div>
 
 <div class="splitcontentright">
-  <h3>Search Users</h3>
-  <% form_tag posts_path, :method => 'get' do %>
-    <p>
-      <%= text_field_tag :search, params[:search] %>
-      <%= submit_tag "Search", :name => nil %>
-    </p>
-  <% end %>
+  <div id="tabs">
+    <ul>
+		  <li><a href="#tabs-1">Search Users</a></li>
+		  <li><a href="#tabs-2">Following</a></li>
+		  <li><a href="#tabs-3">Followers</a></li>
+    </ul>
 
-  <% if @search_results %>
-    <%= render :partial => 'search_results', :locals => { :search_results => @search_results } %>
-  <% end %>
+    <div id="tabs-1">
+      <h3>Search Users</h3>
+      <% form_tag posts_path, :method => 'get' do %>
+        <p>
+          <%= text_field_tag :search, params[:search] %>
+          <%= submit_tag "Search", :name => nil %>
+        </p>
+      <% end %>
+
+      <% if @search_results %>
+        <%= render :partial => 'search_results', :locals => { :search_results => @search_results } %>
+      <% end %>
+    </div>
+
+    <div id="tabs-2">
+      <h3>Following</h3>
+      <ul>
+        <% for friendship in @user.friendships %>
+          <li>
+            <%=h friendship.friend.name %>
+            <% if friendship.accepted %>
+              (<%= link_to "unfollow", friendship, :method => :delete %>)
+            <% elsif !friendship.blocked %>
+              (pending)
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div id="tabs-3">
+      <h3>Followers</h3>
+      <ul>
+        <% for friendship in @user.inverse_friendships %>
+          <% if !friendship.blocked %>
+            <li>
+                <%=h friendship.user.name %>
+                <% if !friendship.accepted %>
+                  (<%= link_to "accept", accept_friendship_path(friendship) %> | <%= link_to "reject", reject_friendship_path(friendship) %> )
+                <% else %>
+                  (<%= link_to "block", block_friendship_path(friendship) %>)
+                <% end %> <!-- IF Accepted -->
+            </li>
+          <% end %> <!-- IF Blocked -->
+        <% end %> <!-- FOR -->
+      </ul>
+    </div>
+</div>
 </div>
 
