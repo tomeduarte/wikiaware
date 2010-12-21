@@ -21,5 +21,9 @@ Dispatcher.to_prepare :redmine_microblogging do
   unless User.included_modules.include? RedmineMicroblogging::UserPatch
     User.send(:include, RedmineMicroblogging::UserPatch)
   end
+
+  unless WikiPage.included_modules.include? RedmineMicroblogging::WikiPagePatch
+    WikiPage.send(:include, RedmineMicroblogging::WikiPagePatch)
+  end
 end
 
