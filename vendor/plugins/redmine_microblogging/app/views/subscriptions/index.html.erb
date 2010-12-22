@@ -1,24 +1,29 @@
-<h1>Listing subscriptions</h1>
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'microblogging', :plugin => 'redmine_microblogging' %>
+    <%= javascript_include_tag "jquery-1.4.4.min.js", :plugin => 'redmine_microblogging' %>
+    <%= javascript_include_tag "jquery-ui-1.8.7.custom.min.js", :plugin => 'redmine_microblogging' %>
+    <%= javascript_include_tag "jquery.cookie.js", :plugin => 'redmine_microblogging' %>
+    <%= javascript_include_tag "microblogging.js", :plugin => 'redmine_microblogging' %>
+<% end %>
 
-<% if ! @subscriptions.empty? %>
-  <table>
-    <tr>
-      <th>Project</th>
-      <th>Page</th>
-    </tr>
+<h2>Subscriptions</h2>
 
+<% if !@subscriptions.empty? %>
+  <ul>
   <% @subscriptions.each do |subscription| %>
-    <tr>
-      <td><%=h subscription.page.project.name %></td>
-<!-- FIXME -->
-      <td><%= link_to subscription.page.title, '/projects/'+subscription.page.project.identifier+'/wiki/'+subscription.page.title %></td>
-      <td><%= link_to 'Remove', subscription, :confirm => 'Are you sure?', :method => :delete %></td>
-    </tr>
+  <li class="subscription-box">
+    <div class="splitcontentleft subscription-left">
+      <p><b>Page subscripted</b> <%= link_to subscription.page.title, '/projects/'+subscription.page.project.identifier+'/wiki/'+subscription.page.title %></p>
+      <p class="subscription-del"><%= link_to 'Remove', subscription, :confirm => 'Are you sure?', :method => :delete %></p>
+    </div>
+    <div class="splitcontentright subscription-right">
+      <p><b>Project</b> <%=h subscription.page.project.name %></p>
+      <p><b>Description</b> <%=h subscription.page.project.description %></p>
+    </div>
+  </li>
   <% end %>
-  </table>
+  </ul>
 <% else %>
   <p>No subscriptions to display.</p>
 <% end %>
-
-<br />
 

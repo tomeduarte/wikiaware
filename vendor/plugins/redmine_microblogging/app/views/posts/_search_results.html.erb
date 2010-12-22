@@ -1,23 +1,27 @@
-<% for search_result in @search_results %>
-  <div>
-    <h4> <%=h search_result.login %></h4>
-    <%= avatar search_result, :size => "50" %>
-    <p> Name: <%=h search_result.name %></p>
-    <p> Email: <%=h search_result.mail %></p>
+<li class='search_item'>
+  <p class='item-avatar'><%= avatar search_result, :size => "40" %></p>
+  <p class='search-login'><%=h search_result.login %></p>
+  <p class='search-name'>  <%=h search_result.name %></p>
+  <p class='search-email'> <%=h search_result.mail %></p>
 
-    <% if !user.friendships.any? {|friendship| friendship.friend_id == search_result.id } %>
+  <p class='search-options'>
+    <% if !user.friendships.any? {|friendship| friendship.friend_id == search_result.id } && search_result.id != user.id %>
       <%= link_to "follow", friendships_path(:friend_id => search_result.id), :method => :post %>
     <% elsif user.friendships.any? {|friendship| friendship.friend_id == search_result.id && friendship.accepted } %>
       <%= link_to "unfollow", user.friendships.first(:conditions => {:friend_id => search_result.id}), :method => :delete %>
+    <% elsif search_result.id != user.id %>
+      pending
+    <% elsif search_result.id == user.id %>
+      that's you
     <% end %>
 
     <% if user.inverse_friendships.any? {|friendship| friendship.user_id == search_result.id && !friendship.accepted } %>
-      | <%= link_to "accept", accept_friendship_path(:id => search_result.id) %> | <%= link_to "reject", reject_friendship_path(:id => search_result.id) %>
+      | <%= link_to "accept", accept_friendship_path(:id => user.inverse_friendships.find(:all, :conditions=>{ :user_id => search_result.id })) %> | <%= link_to "reject", reject_friendship_path(:id => search_result.id) %>
     <% elsif user.inverse_friendships.any? {|friendship| friendship.user_id == search_result.id && friendship.accepted && friendship.blocked } %>
-      | <%= link_to "unblock", unblock_friendship_path(:id => search_result.id) %>
+      | <%= link_to "unblock", unblock_friendship_path(:id => user.inverse_friendships.find(:all, :conditions=>{ :user_id => search_result.id })) %>
     <% elsif user.inverse_friendships.any? {|friendship| friendship.user_id == search_result.id && friendship.accepted && !friendship.blocked } %>
-      | <%= link_to "block", block_friendship_path(:id => search_result.id) %>
+      | <%= link_to "block", block_friendship_path(:id => user.inverse_friendships.find(:all, :conditions=>{ :user_id => search_result.id })) %>
     <% end %>
-  </div>
-<% end %>
+  </p>
+</li>
 

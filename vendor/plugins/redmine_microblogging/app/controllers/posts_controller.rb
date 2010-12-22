@@ -4,6 +4,7 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
+    @post = Post.new
     @user = find_current_user
     @search_results = User.search(params[:search])
     timeline = []
@@ -14,11 +15,6 @@ class PostsController < ApplicationController
     end
     @user.posts.each do |p| timeline << {:user => @user, :post => p} end
     @timeline = timeline.sort_by{ |line| -line[:post].created_at.to_i }
-  end
-
-  # GET /posts/new
-  def new
-    @post = Post.new
   end
 
   # POST /posts

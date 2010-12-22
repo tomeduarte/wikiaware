@@ -2,13 +2,27 @@
     <%= stylesheet_link_tag 'microblogging', :plugin => 'redmine_microblogging' %>
     <%= javascript_include_tag "jquery-1.4.4.min.js", :plugin => 'redmine_microblogging' %>
     <%= javascript_include_tag "jquery-ui-1.8.7.custom.min.js", :plugin => 'redmine_microblogging' %>
+    <%= javascript_include_tag "jquery.cookie.js", :plugin => 'redmine_microblogging' %>
     <%= javascript_include_tag "microblogging.js", :plugin => 'redmine_microblogging' %>
 <% end %>
 
 <div class="splitcontentleft">
-  <%= link_to 'New post', new_post_path, :class => 'contextual icon icon-add' %>
+  <%= link_to 'New post', '#', :class => 'contextual icon icon-add', :id => 'new_post_link'%>
 
   <h2>Timeline</h2>
+
+  <div id="new_post_box">
+    <% form_for(@post) do |f| %>
+      <%= f.error_messages %>
+
+      <p>
+        <%= f.text_area :content, :class => "post_textarea" %>
+      </p>
+      <p>
+        <%= f.submit 'Post', :class => "post_submit" %>
+      </p>
+    <% end %>
+  </div>
 
   <ol>
     <% @timeline.each do |line| %>
@@ -35,41 +49,31 @@
       <% end %>
 
       <% if @search_results %>
-        <%= render :partial => 'search_results', :locals => { :search_results => @search_results, :user => @user } %>
+        <ul class="search_results">
+          <% for search_result in @search_results %>
+            <%= render :partial => 'search_results', :locals => { :search_result => search_result, :user => @user } %>
+          <% end %>
+        </ul>
       <% end %>
     </div>
 
     <div id="tabs-2">
       <h3>Following</h3>
-      <ul>
+      <ul class="search_results">
         <% for friendship in @user.friendships %>
-          <li>
-            <%=h friendship.friend.name %>
-            <% if friendship.accepted %>
-              (<%= link_to "unfollow", friendship, :method => :delete %>)
-            <% elsif !friendship.blocked %>
-              (pending)
-            <% end %>
-          </li>
+            <%= render :partial => 'search_results', :locals => { :search_result => friendship.friend, :user => @user}%>
         <% end %>
       </ul>
     </div>
 
     <div id="tabs-3">
       <h3>Followers</h3>
-      <ul>
+      <ul class="search_results">
         <% for friendship in @user.inverse_friendships %>
           <% if !friendship.blocked %>
-            <li>
-                <%=h friendship.user.name %>
-                <% if !friendship.accepted %>
-                  (<%= link_to "accept", accept_friendship_path(friendship) %> | <%= link_to "reject", reject_friendship_path(friendship) %>)
-                <% else %>
-                  (<%= link_to "block", block_friendship_path(friendship) %>)
-                <% end %> <!-- IF Accepted -->
-            </li>
-          <% end %> <!-- IF Blocked -->
-        <% end %> <!-- FOR -->
+            <%= render :partial => 'search_results', :locals => { :search_result => friendship.user, :user => @user}%>
+          <% end %>
+        <% end %>
       </ul>
     </div>
 </div>
